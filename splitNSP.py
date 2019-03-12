@@ -9,20 +9,21 @@ import shutil
 from datetime import datetime
 startTime = datetime.now()
 
-splitSize = 0xFFFF0000 # 4,294,901,760 bytes
-chunkSize = 0x8000 # 32,768 bytes
+splitSize = 0xFFFF0000  # 4,294,901,760 bytes
+chunkSize = 0x8000  # 32,768 bytes
 
-def splitQuick(filepath):
+
+def splitQuick(filepath) -> bool:
     fileSize = os.path.getsize(filepath)
     info = shutil.disk_usage(os.path.dirname(os.path.abspath(filepath)))
     if info.free < splitSize:
         print('Not enough temporary space. Needs 4GiB of free space\n')
-        return
+        return False
     print('Calculating number of splits...\n')
     splitNum = int(fileSize/splitSize)
     if splitNum == 0:
         print('This NSP is under 4GiB and does not need to be split.\n')
-        return
+        return False
 
     print('Splitting NSP into {0} parts...\n'.format(splitNum + 1))
 
@@ -73,6 +74,7 @@ def splitQuick(filepath):
     print('Starting part 00\nPart 00 complete')
 
     print('\nNSP successfully split!\n')
+    return True
 
 
 def splitCopy(filepath):
@@ -80,12 +82,12 @@ def splitCopy(filepath):
     info = shutil.disk_usage(os.path.dirname(os.path.abspath(filepath)))
     if info.free < fileSize*2:
         print('Not enough free space to run. Will require twice the space as the NSP file\n')
-        return
+        return False
     print('Calculating number of splits...\n')
     splitNum = int(fileSize/splitSize)
     if splitNum == 0:
         print('This NSP is under 4GiB and does not need to be split.\n')
-        return
+        return False
     
     print('Splitting NSP into {0} parts...\n'.format(splitNum + 1))
 
@@ -115,6 +117,7 @@ def splitCopy(filepath):
                         partSize += chunkSize
             print('Part {:02} complete'.format(i))
     print('\nNSP successfully split!\n')
+    return True
 
 
 def main():
@@ -140,6 +143,7 @@ def main():
         splitQuick(filepath)
     else:
         splitCopy(filepath)
+
 
 if __name__ == "__main__":
     main()

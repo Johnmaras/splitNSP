@@ -29,12 +29,15 @@ def split():
         return
 
     varVal = quickChkBxVar.get()
+    result = False
     if varVal == 0:
         messages.config(text="Calling copy")
-        splitNSP.splitCopy(file_to_split)
+        result = splitNSP.splitCopy(file_to_split)
     elif varVal == 1:
         messages.config(text="Calling quick")
-        splitNSP.splitQuick(file_to_split)
+        result = splitNSP.splitQuick(file_to_split)
+
+    messages.config(text=f"The file split was {'successful' if result else 'a failure'}")
 
 
 root = Tk()
