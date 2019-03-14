@@ -6,6 +6,7 @@
 import os
 import argparse
 import shutil
+import subprocess
 from datetime import datetime
 startTime = datetime.now()
 
@@ -32,6 +33,8 @@ def splitQuick(filepath) -> bool:
     if os.path.exists(dir):
         shutil.rmtree(dir)
     os.makedirs(dir)
+
+
 
     # Move input file to directory and rename it to first part
     filename = os.path.basename(filepath)
@@ -96,6 +99,7 @@ def splitCopy(filepath):
     if os.path.exists(dir):
         shutil.rmtree(dir)
     os.makedirs(dir)
+    r = subprocess.call(["attrib", "+a", dir])
 
     remainingSize = fileSize
 
