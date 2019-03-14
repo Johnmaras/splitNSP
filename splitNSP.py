@@ -33,8 +33,7 @@ def splitQuick(filepath) -> bool:
     if os.path.exists(dir):
         shutil.rmtree(dir)
     os.makedirs(dir)
-
-
+    r = subprocess.call(["attrib", "+a", dir])
 
     # Move input file to directory and rename it to first part
     filename = os.path.basename(filepath)
